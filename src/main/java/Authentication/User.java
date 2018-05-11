@@ -131,6 +131,10 @@ public class User {
 		userDBM.addToFavorites(isbn);
 	}
 	
+	public void addToRated(String isbn) {
+		userDBM.addToRated(isbn);
+	}
+	
 	public void removeFromRead(String isbn) {
 		userDBM.removeFromRead(isbn);;
 	}
@@ -149,6 +153,10 @@ public class User {
 	
 	public boolean checkFav(String isbn) {
 		return userDBM.checkFav(isbn);
+	}
+	
+	public boolean checkRated(String isbn) {
+		return userDBM.checkRated(isbn);
 	}
 	
 	public boolean checkRead(String isbn) {

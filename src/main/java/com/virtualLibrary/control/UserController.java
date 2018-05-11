@@ -54,6 +54,13 @@ public class UserController {
     	user.addToFavorites(Utils.extractFromJSON(ISBN,keys).get(0));
    	}
     
+    @RequestMapping(value = "/library/addRated", method = RequestMethod.POST)
+   	public void addToRated(ModelMap model, @RequestBody String ISBN){
+    	ArrayList<String> keys = new ArrayList<String> ();
+    	keys.add("ISBN");
+    	user.addToRated(Utils.extractFromJSON(ISBN,keys).get(0));
+   	}
+    
     @RequestMapping(value = "/library/remFav", method = RequestMethod.POST)
    	public User remFav(ModelMap model, @RequestBody String ISBN){
     	ArrayList<String> keys = new ArrayList<String> ();
@@ -67,6 +74,13 @@ public class UserController {
     	ArrayList<String> keys = new ArrayList<String> ();
     	keys.add("ISBN");
     	return user.checkFav(Utils.extractFromJSON(ISBN,keys).get(0));
+   	}
+    
+    @RequestMapping(value = "/library/checkRated", method = RequestMethod.POST)
+   	public Boolean checkRated(ModelMap model, @RequestBody String ISBN){
+    	ArrayList<String> keys = new ArrayList<String> ();
+    	keys.add("ISBN");
+    	return user.checkRated(Utils.extractFromJSON(ISBN,keys).get(0));
    	}
       
     @RequestMapping(value = "/library/addToRead", method = RequestMethod.POST)

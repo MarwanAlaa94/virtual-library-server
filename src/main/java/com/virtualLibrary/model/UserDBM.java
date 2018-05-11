@@ -19,6 +19,7 @@ public class UserDBM {
 	private static final int FAVORITE_ID = 1;
 	private static int READ_ID = 2;
 	private static int TO_READ_ID = 3;
+	private static int Rated_ID = 4;
 	public UserDBM(User user) {
         this.user = user;
         try {
@@ -51,6 +52,11 @@ public class UserDBM {
 		addRecord(isbn, FAVORITE_ID);
 	}
 	
+	public void addToRated(String isbn) {
+		if (isbn == null || isbn.length() == 0)throw new IllegalArgumentException();
+		addRecord(isbn, Rated_ID);
+	}
+	
 	public void removeFromRead(String isbn) {
 		if (isbn == null || isbn.length() == 0)throw new IllegalArgumentException();
 		removeRecord(isbn, READ_ID);
@@ -76,6 +82,11 @@ public class UserDBM {
 	public boolean checkFav(String isbn) {
 		if (isbn == null || isbn.length() == 0)throw new IllegalArgumentException();
 		return checkBook(isbn, FAVORITE_ID);
+	}
+	
+	public boolean checkRated(String isbn) {
+		if (isbn == null || isbn.length() == 0)throw new IllegalArgumentException();
+		return checkBook(isbn, Rated_ID);
 	}
 	
 	public boolean checkRead(String isbn) {
