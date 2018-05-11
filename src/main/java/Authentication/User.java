@@ -2,13 +2,12 @@ package Authentication;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.services.books.Books;
 import com.virtualLibrary.model.Book;
 import com.virtualLibrary.model.UserDBM;
 import com.virtualLibrary.retreive.BookHandler;
-import com.virtualLibrary.utils.Utils;
 
 public class User {
 	private String name;
@@ -37,16 +36,16 @@ public class User {
 		this.bookHandler = bookHandler;
 	}
 	
-	public User(Payload payload, Books books, BookHandler bookHandler) {
-		userId = payload.getSubject();
-		//System.out.println("User ID: " + userId);
-		email = payload.getEmail();
-		emailVerified = Boolean.valueOf(payload.getEmailVerified());
-		name = (String) payload.get("name");
-		pictureUrl = (String) payload.get("picture");
-		locale = (String) payload.get("locale");
-		familyName = (String) payload.get("family_name");
-		givenName = (String) payload.get("given_name");
+	public User(Map<String, String> payload, Books books, BookHandler bookHandler) {
+		userId = payload.get("sub");
+		System.out.println("User ID: " + userId);
+		email = payload.get("email");
+		emailVerified = Boolean.parseBoolean(payload.get("email_verified"));
+		name = payload.get("name");
+		pictureUrl = payload.get("picture");
+		locale = payload.get("locale");
+		familyName = payload.get("family_name");
+		givenName = payload.get("given_name");
 		userDBM = new UserDBM(this);
 		this.books = books;
 		this.bookHandler = bookHandler;
@@ -124,16 +123,40 @@ public class User {
 		return userId;
 	}
 	
+	public void removeFromFavorites(String isbn) {
+		userDBM.removeFromFavorites(isbn);;
+	}
+	
 	public void addToFavorites(String isbn) {
 		userDBM.addToFavorites(isbn);
+	}
+	
+	public void removeFromRead(String isbn) {
+		userDBM.removeFromRead(isbn);;
 	}
 	
 	public void addRead(String isbn) {
 		userDBM.addRead(isbn);
 	}
 	
+	public void removeFromToBeRead(String isbn) {
+		userDBM.removeFromToBeRead(isbn);
+	}
+	
 	public void addToBeRead(String isbn) {
 		userDBM.addToBeRead(isbn);
+	}
+	
+	public boolean checkFav(String isbn) {
+		return userDBM.checkFav(isbn);
+	}
+	
+	public boolean checkRead(String isbn) {
+		return userDBM.checkRead(isbn);
+	}
+	
+	public boolean checkToRead(String isbn) {
+		return userDBM.checkToRead(isbn);
 	}
 	
 	public List<Book> getFavorites() {
@@ -150,7 +173,7 @@ public class User {
     private List<Book> createBooksList(List<String> isbns) {
     	List<Book> ret = new ArrayList<Book>();
     	isbns.forEach(isbn -> {
-    		Book book = bookHandler.getBook(books, isbn, "hamada");
+    		Book book = bookHandler.getBook(books, isbn);
     		if(book != null && !book.getTitle().equals("hamada"))
     		    ret.add(book);
     	});

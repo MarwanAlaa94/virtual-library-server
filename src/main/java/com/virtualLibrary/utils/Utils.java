@@ -1,24 +1,25 @@
 package com.virtualLibrary.utils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import Authentication.ClientCredentials;
-import Authentication.User;
-
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.http.apache.ApacheHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.services.books.Books;
 import com.virtualLibrary.retreive.BookHandler;
+
+import Authentication.User;
 
 public class Utils {
 	
@@ -57,23 +58,8 @@ public class Utils {
     }
     
     public static User getUserInfo(String token, BookHandler bookHandler, Books books) {
-		GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier
-			  .Builder(new ApacheHttpTransport(), JacksonFactory.getDefaultInstance())
-			  .setAudience(Collections.singletonList(ClientCredentials.CLIENT_ID))
-			  .build();
-		GoogleIdToken idToken;
-		try {
-			System.out.println(token);
-			idToken = verifier.verify(token);
-			System.out.println(idToken);
-		  	if (idToken != null) {
-		  	  return new User(idToken.getPayload(), books, bookHandler);
-		  	} else {
-		  		System.out.println("Invalid ID token.");
-		  	}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}	
+    	Map<String, String> map = getMapFromGoogleTokenString(token);
+    	if (map != null) return new User(map, books, bookHandler);
 		System.out.println("problem in getting user :)");
 		return new User(books, bookHandler);
 	}
@@ -87,36 +73,40 @@ public class Utils {
 				params.add(jObject.getString(key));
 			}
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return params;
     	
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-   
+    private static Map<String,String> getMapFromGoogleTokenString(final String idTokenString){
+        BufferedReader in = null;
+        try {
+            in = new BufferedReader(new InputStreamReader(
+                    ((HttpURLConnection) (new URL("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token="
+                    	+ idTokenString.trim()))
+                    .openConnection()).getInputStream(), Charset.forName("UTF-8")));
+
+            StringBuffer b = new StringBuffer();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null){
+                b.append(inputLine + "\n");
+            }
+            ObjectMapper objectMapper = new ObjectMapper();
+            return new ObjectMapper().readValue(b.toString(), objectMapper.getTypeFactory()
+        					   .constructMapType(Map.class, String.class, String.class));
+
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally{
+            if(in!=null){
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }   
 }

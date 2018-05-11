@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.api.services.books.Books;
 import com.google.api.services.books.Books.Volumes.List;
+import com.google.api.services.books.model.Volume;
 import com.google.api.services.books.model.Volumes;
 import com.virtualLibrary.model.Book;
 
@@ -59,16 +60,13 @@ public class BookHandler {
 		return result;
 	}
 	
-	public Book getBook(Books books, String ISBN, String title) {
-		ArrayList<Book> res = search(books, "title", ISBN, 1);
-		if(res.size() == 0){
-			res = search(books, "title", title, 1); //hack for now
-			if(res.size() != 0){
-			    res.get(0).setTitle("hamada");
-				return res.get(0);
-			}
-			return null;  
+	public Book getBook(Books books, String ISBN) {
+		Volume volume = null;
+		try {
+			volume = books.volumes().get(ISBN).execute();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		return res.get(0);
+		return new Book(volume);
 	}
 }

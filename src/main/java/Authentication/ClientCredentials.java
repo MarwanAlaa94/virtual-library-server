@@ -1,7 +1,5 @@
 package Authentication;
 
-import org.springframework.stereotype.Service;
-
 public class ClientCredentials {
   public static final String API_KEY =
 		"AIzaSyDhuxOYrtwpNw-63es6mHdAAdRh-HrDLKQ";

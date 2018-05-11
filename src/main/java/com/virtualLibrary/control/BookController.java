@@ -2,10 +2,8 @@ package com.virtualLibrary.control;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,23 +11,15 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import Authentication.ClientCredentials;
-
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.apache.ApacheHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.books.Books;
-import com.google.api.services.books.BooksRequestInitializer;
 import com.virtualLibrary.model.Book;
 import com.virtualLibrary.retreive.BookHandler;
 import com.virtualLibrary.retreive.LibraryBooks;
-import com.virtualLibrary.utils.*;
+import com.virtualLibrary.utils.Utils;
+
+import Authentication.ClientCredentials;
 
 
 @RestController
@@ -83,7 +73,7 @@ public class BookController {
     	JSONObject jObject;
 		try {
 			jObject = new JSONObject(jsonStr);
-		    Book book = bookHandler.getBook(books, jObject.getString("ISBN"),  jObject.getString("title"));
+		    Book book = bookHandler.getBook(books, jObject.getString("ISBN"));
 	        return book.getAverageRating().toString();
 	        
 		} catch (JSONException e) {
@@ -98,7 +88,7 @@ public class BookController {
     	 keys.add("ISBN");
     	 keys.add("title");
     	 List<String> params = Utils.extractFromJSON(jsonStr, keys);
-         Book book = bookHandler.getBook(books, params.get(0), params.get(1));
+         Book book = bookHandler.getBook(books, params.get(0));
          return book.getReviews();
     }
     

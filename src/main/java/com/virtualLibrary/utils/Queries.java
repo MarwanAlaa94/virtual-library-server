@@ -8,5 +8,6 @@ public class Queries {
 	public static String addReview = "INSERT INTO REVIEW (REVIEW, REVIEWER, ISBN) VALUES (?, ?, ?)";
 	public static String addBookToUser = "INSERT INTO USER VALUES (?, ?, ?)";
 	public static String getBooks = "Select ISBN FROM USER WHERE  id = ? AND type = ?";
+	public static String checkBook = "Select * FROM USER WHERE  id = ? AND ISBN = ? AND type = ?";
 	public static String removeBook = "DELETE FROM USER  WHERE id = ? and ISBN = ? and type = ?";
 }

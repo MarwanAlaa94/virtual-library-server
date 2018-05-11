@@ -41,18 +41,48 @@ public class UserDBM {
 		return getBooks(TO_READ_ID);
 	}
 	
+	public void removeFromFavorites(String isbn) {
+		if (isbn == null || isbn.length() == 0)throw new IllegalArgumentException();
+		removeRecord(isbn, FAVORITE_ID);
+	}
+	
 	public void addToFavorites(String isbn) {
+		if (isbn == null || isbn.length() == 0)throw new IllegalArgumentException();
 		addRecord(isbn, FAVORITE_ID);
 	}
 	
+	public void removeFromRead(String isbn) {
+		if (isbn == null || isbn.length() == 0)throw new IllegalArgumentException();
+		removeRecord(isbn, READ_ID);
+	}
+	
 	public void addRead(String isbn) {
+		if (isbn == null || isbn.length() == 0)throw new IllegalArgumentException();
 		removeRecord(isbn, TO_READ_ID);
 		addRecord(isbn, READ_ID);
 	}
 	
+	public void removeFromToBeRead(String isbn) {
+		if (isbn == null || isbn.length() == 0)throw new IllegalArgumentException();
+		removeRecord(isbn, TO_READ_ID);
+	}
+	
 	public void addToBeRead(String isbn) {
+		if (isbn == null || isbn.length() == 0)throw new IllegalArgumentException();
 		removeRecord(isbn, READ_ID);
 		addRecord(isbn, TO_READ_ID);
+	}
+
+	public boolean checkFav(String isbn) {
+		return checkBook(isbn, FAVORITE_ID);
+	}
+	
+	public boolean checkRead(String isbn) {
+		return checkBook(isbn, READ_ID);
+	}
+	
+	public boolean checkToRead(String isbn) {
+		return checkBook(isbn, TO_READ_ID);
 	}
 	
 	private List<String> getBooks(int type) {
@@ -97,5 +127,20 @@ public class UserDBM {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private boolean checkBook(String isbn, int type) {
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+			        Queries.removeBook);
+			preparedStatement.setString(1, user.getUserId());
+			preparedStatement.setString(2, isbn);
+			preparedStatement.setInt(3, type);
+			rs = preparedStatement.executeQuery();
+			return rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

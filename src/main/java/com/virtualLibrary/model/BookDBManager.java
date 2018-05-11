@@ -144,7 +144,6 @@ public class BookDBManager {
 		}
 	}
 	public void build() {
-		this.book = book;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/book-library", "root", "");
