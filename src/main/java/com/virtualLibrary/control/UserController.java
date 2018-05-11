@@ -55,10 +55,11 @@ public class UserController {
    	}
     
     @RequestMapping(value = "/library/remFav", method = RequestMethod.POST)
-   	public void remFav(ModelMap model, @RequestBody String ISBN){
+   	public User remFav(ModelMap model, @RequestBody String ISBN){
     	ArrayList<String> keys = new ArrayList<String> ();
     	keys.add("ISBN");
     	user.removeFromFavorites(Utils.extractFromJSON(ISBN,keys).get(0));
+    	return user;
    	}
     
     @RequestMapping(value = "/library/checkFav", method = RequestMethod.POST)
@@ -76,10 +77,11 @@ public class UserController {
    	}
     
     @RequestMapping(value = "/library/remToRead", method = RequestMethod.POST)
-   	public void remToRead(ModelMap model, @RequestBody String ISBN){
+   	public User remToRead(ModelMap model, @RequestBody String ISBN){
     	ArrayList<String> keys = new ArrayList<String> ();
     	keys.add("ISBN");
     	user.removeFromToBeRead(Utils.extractFromJSON(ISBN,keys).get(0));
+    	return user;
    	}
     
     @RequestMapping(value = "/library/checkToRead", method = RequestMethod.POST)
@@ -97,10 +99,11 @@ public class UserController {
    	}
     
     @RequestMapping(value = "/library/remDone", method = RequestMethod.POST)
-   	public void remDone(ModelMap model, @RequestBody String ISBN){
+   	public User remDone(ModelMap model, @RequestBody String ISBN){
     	ArrayList<String> keys = new ArrayList<String> ();
     	keys.add("ISBN");
     	user.removeFromRead(Utils.extractFromJSON(ISBN,keys).get(0));
+    	return user;
    	}
     
     @RequestMapping(value = "/library/checkDone", method = RequestMethod.POST)
