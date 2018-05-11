@@ -10,6 +10,7 @@ import java.util.List;
 
 import Authentication.User;
 
+import com.virtualLibrary.retreive.DatabaseConnection;
 import com.virtualLibrary.utils.Queries;
 
 public class UserDBM {
@@ -23,8 +24,7 @@ public class UserDBM {
 	public UserDBM(User user) {
         this.user = user;
         try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/book-library", "root", "");
+			connection = DatabaseConnection.getInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

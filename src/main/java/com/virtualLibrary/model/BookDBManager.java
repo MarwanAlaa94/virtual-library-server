@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.virtualLibrary.retreive.DatabaseConnection;
 import com.virtualLibrary.utils.Queries;
 
 public class BookDBManager {
@@ -145,11 +146,8 @@ public class BookDBManager {
 	}
 	public void build() {
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/book-library", "root", "");
+			connection = DatabaseConnection.getInstance();
 			statement = connection.createStatement();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
