@@ -62,7 +62,7 @@ public class UserController {
    	}
     
     @RequestMapping(value = "/library/checkFav", method = RequestMethod.POST)
-   	public boolean checkFav(ModelMap model, @RequestBody String ISBN){
+   	public Boolean checkFav(ModelMap model, @RequestBody String ISBN){
     	ArrayList<String> keys = new ArrayList<String> ();
     	keys.add("ISBN");
     	return user.checkFav(Utils.extractFromJSON(ISBN,keys).get(0));
@@ -83,7 +83,7 @@ public class UserController {
    	}
     
     @RequestMapping(value = "/library/checkToRead", method = RequestMethod.POST)
-   	public boolean checkToRead(ModelMap model, @RequestBody String ISBN){
+   	public Boolean checkToRead(ModelMap model, @RequestBody String ISBN){
     	ArrayList<String> keys = new ArrayList<String> ();
     	keys.add("ISBN");
     	return user.checkToRead(Utils.extractFromJSON(ISBN,keys).get(0));
@@ -104,7 +104,7 @@ public class UserController {
    	}
     
     @RequestMapping(value = "/library/checkDone", method = RequestMethod.POST)
-   	public boolean checkRead(ModelMap model, @RequestBody String ISBN){
+   	public Boolean checkRead(ModelMap model, @RequestBody String ISBN){
     	ArrayList<String> keys = new ArrayList<String> ();
     	keys.add("ISBN");
     	return user.checkRead(Utils.extractFromJSON(ISBN,keys).get(0));
