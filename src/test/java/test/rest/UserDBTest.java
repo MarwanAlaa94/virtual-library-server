@@ -22,7 +22,7 @@ public class UserDBTest {
 	}
 	
 	private boolean check(List<String> last, String isbn, List<String> favs) {
-		last.forEach(book -> favs.remove(last));
+		favs.removeAll(last);
 		favs.remove(isbn);
 		return favs.isEmpty();
 	}

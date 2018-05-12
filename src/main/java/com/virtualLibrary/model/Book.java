@@ -23,6 +23,8 @@ public class Book {
         bookDBManager.build();
 	}
 	
+	public Book(){}
+	
 	public String getISBN() {
 		return ISBN;
 	}
@@ -103,6 +105,10 @@ public class Book {
 
 	public void setRateDBNo(int rateDBNo) {
 		this.rateDBNo = rateDBNo;
+	}
+	
+	public void setBookDBManager(BookDBManager manager) {
+		this.bookDBManager = manager;
 	}
 	
 	public void addReview(String review, String reviewer) {
