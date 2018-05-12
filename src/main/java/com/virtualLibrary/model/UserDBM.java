@@ -74,14 +74,17 @@ public class UserDBM {
 	}
 
 	public boolean checkFav(String isbn) {
+		if (isbn == null || isbn.length() == 0)throw new IllegalArgumentException();
 		return checkBook(isbn, FAVORITE_ID);
 	}
 	
 	public boolean checkRead(String isbn) {
+		if (isbn == null || isbn.length() == 0)throw new IllegalArgumentException();
 		return checkBook(isbn, READ_ID);
 	}
 	
 	public boolean checkToRead(String isbn) {
+		if (isbn == null || isbn.length() == 0)throw new IllegalArgumentException();
 		return checkBook(isbn, TO_READ_ID);
 	}
 	
@@ -132,7 +135,7 @@ public class UserDBM {
 	private boolean checkBook(String isbn, int type) {
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-			        Queries.removeBook);
+			        Queries.checkBook);
 			preparedStatement.setString(1, user.getUserId());
 			preparedStatement.setString(2, isbn);
 			preparedStatement.setInt(3, type);
